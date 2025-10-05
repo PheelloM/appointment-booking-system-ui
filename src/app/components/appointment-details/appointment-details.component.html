@@ -1,0 +1,177 @@
+<div class="appointment-details-container">
+  <div class="back-nav">
+    <button class="btn btn-outline back-btn" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back to My Appointments
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading appointment details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-state">
+    <div class="error-content">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h3>Unable to Load Appointment</h3>
+      <p>{{ error }}</p>
+      <div class="error-actions">
+        <button class="btn btn-primary" (click)="loadAppointmentDetails()">
+          <i class="fas fa-redo"></i> Try Again
+        </button>
+        <button class="btn btn-outline" (click)="goBack()">
+          <i class="fas fa-arrow-left"></i> Go Back
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Appointment Details -->
+  <div *ngIf="appointment && !loading" class="appointment-details-card">
+    <!-- Header Section -->
+    <div class="details-header">
+      <div class="header-content">
+        <h1>Appointment Details</h1>
+        <div class="reference-number">
+          Reference: <strong>{{ appointment.bookingReference }}</strong>
+        </div>
+      </div>
+      <div class="header-status">
+        <span [class]="'status-badge ' + getStatusClass(appointment.status)">
+          {{ appointment.status | titlecase }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="details-content">
+      <!-- Branch Information -->
+      <section class="detail-section">
+        <h2>
+          <i class="fas fa-building section-icon"></i>
+          Branch Information
+        </h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <label>Branch Name</label>
+            <span class="detail-value">{{ appointment.branchName }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Address</label>
+            <span class="detail-value">{{ appointment.branchAddress }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Appointment Timing -->
+      <section class="detail-section">
+        <h2>
+          <i class="fas fa-clock section-icon"></i>
+          Appointment Timing
+        </h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <label>Date</label>
+            <span class="detail-value highlight">{{ formatDate(appointment.appointmentDate) }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Time</label>
+            <span class="detail-value highlight">
+              {{ formatTime(appointment.startTime) }} - {{ formatTime(appointment.endTime) }}
+            </span>
+          </div>
+          <div class="detail-item">
+            <label>Duration</label>
+            <span class="detail-value">30 minutes</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Customer Information -->
+      <section class="detail-section">
+        <h2>
+          <i class="fas fa-user section-icon"></i>
+          Customer Information
+        </h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <label>Full Name</label>
+            <span class="detail-value">{{ appointment.customerName }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Email Address</label>
+            <span class="detail-value">{{ appointment.customerEmail }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Phone Number</label>
+            <span class="detail-value">{{ appointment.customerPhone || 'Not provided' }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Appointment Status -->
+      <section class="detail-section">
+        <h2>
+          <i class="fas fa-info-circle section-icon"></i>
+          Appointment Status
+        </h2>
+        <div class="status-info">
+          <div class="status-item">
+            <label>Current Status</label>
+            <span [class]="'status-value ' + getStatusClass(appointment.status)">
+              {{ appointment.status | titlecase }}
+            </span>
+          </div>
+          <div class="status-item">
+            <label>Appointment ID</label>
+            <span class="detail-value">{{ appointment.id }}</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Action Buttons -->
+<div class="action-buttons">
+  <div class="primary-actions">
+    <button 
+      *ngIf="canCancel()"
+      class="btn btn-danger" 
+      (click)="cancelAppointment()"
+      [disabled]="canceling || loading">
+      <i class="fas fa-times"></i> 
+      <span *ngIf="!canceling">Cancel Appointment</span>
+      <span *ngIf="canceling">Cancelling...</span>
+    </button>
+    
+    <button 
+      *ngIf="canReschedule()"
+      class="btn btn-outline" 
+      (click)="rescheduleAppointment()"
+      [disabled]="canceling || loading">
+      <i class="fas fa-calendar-alt"></i> Reschedule
+    </button>
+  </div>
+  
+  <div class="secondary-actions">
+    <button class="btn btn-secondary" (click)="goBack()" [disabled]="canceling">
+      <i class="fas fa-arrow-left"></i> Back to List
+    </button>
+  </div>
+</div>
+
+    <!-- Help Section -->
+    <div class="help-section">
+      <h3>
+        <i class="fas fa-question-circle"></i>
+        Need Help?
+      </h3>
+      <p>
+        If you have any questions or need to make changes to your appointment, 
+        please contact our support team at 
+        <a href="mailto:support@appointments.com">support@appointments.com</a>.
+      </p>
+    </div>
+  </div>
+</div>

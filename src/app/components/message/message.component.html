@@ -1,0 +1,24 @@
+<div class="message-container">
+  <div
+    *ngFor="let message of messages"
+    [class]="'message ' + getMessageClass(message)"
+    (click)="removeMessage(message)">
+
+    <div class="message-icon">
+      {{ getMessageIcon(message) }}
+    </div>
+
+    <div class="message-content">
+      <div class="message-title" *ngIf="message.title">
+        {{ message.title }}
+      </div>
+      <div class="message-text">
+        {{ message.content }}
+      </div>
+    </div>
+
+    <button class="message-close" (click)="removeMessage(message)">
+      &times;
+    </button>
+  </div>
+</div>

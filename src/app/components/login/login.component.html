@@ -1,0 +1,80 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Sign in to your account</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="alert alert-error">
+      <i class="icon-error"></i>
+      {{ error }}
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="username" class="required">Username or Email</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          class="form-control"
+          placeholder="Enter your username or email"
+          [class.error]="isFieldInvalid('username')"
+          autocomplete="username">
+        <div class="error-message" *ngIf="isFieldInvalid('username')">
+          Username is required
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="required">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          placeholder="Enter your password"
+          [class.error]="isFieldInvalid('password')"
+          autocomplete="current-password">
+        <div class="error-message" *ngIf="isFieldInvalid('password')">
+          Password is required
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn-primary btn-login"
+          [disabled]="loading || !loginForm.valid">
+          <span *ngIf="!loading">Sign In</span>
+          <span *ngIf="loading">
+            <i class="spinner-small"></i>
+            Signing In...
+          </span>
+        </button>
+      </div>
+
+      <!-- Demo Credentials (for development) -->
+      <div class="demo-credentials" *ngIf="!environment.production">
+        <h3>Demo Credentials</h3>
+        <div class="credential-pair">
+          <strong>Admin:</strong> admin / admin123
+        </div>
+        <div class="credential-pair">
+          <strong>User:</strong> user / user123
+        </div>
+      </div>
+    </form>
+
+    <!-- Additional Links -->
+    <div class="login-footer">
+      <p>Don't have an account? <a routerLink="/register" class="link">Sign up</a></p>
+      <p><a routerLink="/forgot-password" class="link">Forgot your password?</a></p>
+    </div>
+  </div>
+</div>
